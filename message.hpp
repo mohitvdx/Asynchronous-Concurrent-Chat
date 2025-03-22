@@ -24,6 +24,11 @@ class Message{
             }
         }
 
+        void printMessage(){
+            std::string message = getData();
+            std::cout<<"Message recieved: "<<message<<std::endl;
+        }
+
         std::string getData(){
             int length = header + bodyLength_;
             std::string result(data, length);
