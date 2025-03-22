@@ -150,27 +150,37 @@ The class diagram provides a visual representation of the project's structure an
 
 ## Build and Run
 
-To build and run the project, ensure you have Boost libraries installed on your system. Then, follow these steps:
+**Note for macOS Users:** Boost libraries might not be readily available or easily installable on macOS. To address this, the project was developed within a Docker container running Ubuntu. The development workflow involved SSHing into this container to write and run the code.
+
+To build and run the project, follow these steps:
 
 1.  **Clone the Repository:**
     ```bash
     git clone <repository_url>
     cd ChatRoom
     ```
-2.  **Build the Project:**
+2.  **(For macOS Users): Set up Docker Container:**
+    * Ensure you have Docker installed on your macOS system.
+    * Create a Dockerfile (if you haven't already) with an Ubuntu base image and instructions to install necessary dependencies, including Boost.Asio and build tools.
+    * Build the Docker image: `docker build -t chatroom_dev .`
+    * Run a container from the image, mapping a port for the chat application and potentially a port for SSH: `docker run -d -p <host_port>:<container_port> -p <host_ssh_port>:22 --name chatroom_container chatroom_dev`
+    * Find the IP address of your Docker container.
+    * SSH into the container: `ssh <user>@<container_ip> -p <host_ssh_port>`
+    * Navigate to the project directory within the container.
+3.  **(Within the Ubuntu Docker Container or on a system with Boost): Build the Project:**
     Run the `make` command in the project root directory. This will compile the server and client applications.
     ```bash
     make
     ```
     This command utilizes the provided `Makefile` to compile `chatRoom.cpp` into the server executable `chatApp` and `client.cpp` into the client executable `clientApp`. The `Makefile` uses `g++` with C++20 standard, includes necessary Boost libraries for linking, and enables debugging symbols.
-3.  **Run the Server:**
+4.  **(Within the Docker Container or on a system with Boost): Run the Server:**
     Execute the server application, providing the port number as a command-line argument. For example, to run the server on port 12345:
     ```bash
     ./chatApp 12345
     ```
-    The server will start listening for incoming connections on the specified port.
-4.  **Run the Client(s):**
-    Open one or more terminal windows and execute the client application, providing the same port number as the server:
+    The server will start listening for incoming connections on the specified port (within the container). Ensure that the container's port is mapped to a port on your host machine if you are running the client outside the container.
+5.  **(Within the Docker Container or on a system with Boost): Run the Client(s):**
+    Open one or more terminal windows (either within the Docker container or on your host machine if the port is correctly mapped) and execute the client application, providing the same port number as the server:
     ```bash
     ./clientApp 12345
     ```
