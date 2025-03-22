@@ -1,4 +1,4 @@
-# ChatRoom
+# Asynchronous Concurrent Chat Server (ACCS) alias ChatRoom
 
 ## Project Overview
 
